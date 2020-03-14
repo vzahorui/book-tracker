@@ -1,13 +1,12 @@
-import os
+from pathlib import Path
 import sqlite3
 
 
-conn = sqlite3.connect('books.db')
-c = conn.cursor()
-
-with open(os.path.join('sql', 'DDL.sql'), 'r') as f:
+with open(Path(__file__).parent / 'sql' / 'DDL.sql', 'r') as f:
     ddl = f.read()
+    
+with sqlite3.connect(Path(__file__).parent / 'books.db') as conn:
+    c = conn.cursor()
+    c.executescript(ddl)
 
-c.executescript(ddl)
-conn.commit()
 conn.close()
