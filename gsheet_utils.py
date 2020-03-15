@@ -1,5 +1,6 @@
-import os
+from pathlib import Path
 import logging.config
+from typing import List, Any
 
 import yaml
 from google.oauth2 import service_account
@@ -15,9 +16,10 @@ logging.config.dictConfig(log_config)
 logger = logging.getLogger(__name__)
 
 
-def check_author():
+def build_service():
+    '''Connect to the Google sheets API.'''
     
-    SERVICE_ACCOUNT_FILE = os.path.join('credentials', 'sa_client_secret.json')
+    SERVICE_ACCOUNT_FILE = Path(__file__).parent / 'credentials' / 'sa_client_secret.json'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     
     # get autorization credentials
@@ -28,7 +30,13 @@ def check_author():
     
     # call the Sheets API
     sheet = service.spreadsheets()
-    # get the name the author from the Google sheet
+    return sheet
+
+
+def check_author() -> str:
+    '''Check the name of the selected author.'''
+    
+    sheet = build_service()
     author = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range='display!A2:A').execute()
     author = author.get('values', [])
     if author == []:
@@ -37,4 +45,12 @@ def check_author():
     else:
         author = author[0][0].strip()
     return author
+
+def paste_books(data: List[List[Any]]):
+    '''Fill Google sheet with books data.'''
     
+    sheet = build_service()
+    # first clear space
+    books = sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range='display!A7:C').execute()
+    result = sheet.values().update(spreadsheetId=SPREADSHEET_ID, range='display!A7:C',
+                                   valueInputOption='USER_ENTERED', body={'values':data}).execute()

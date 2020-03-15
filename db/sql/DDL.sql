@@ -3,8 +3,8 @@ create table goodreads_books (
     book_id integer primary key,
     book_title text,
     title_without_series text,
-    publication_year integer, 
-    publication_month integer,
+    publication_year text, 
+    publication_month text,
     author_id integer,
     author_name text,
     created_at text
@@ -34,6 +34,6 @@ create table final_books (
     book_title text,
     series_title text,
     number_in_series text,
-    publication_year integer,
-    publication_month integer
+    publication_year text,
+    publication_month text
 );

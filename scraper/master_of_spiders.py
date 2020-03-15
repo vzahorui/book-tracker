@@ -52,7 +52,7 @@ def check_new_scraped_books():
         c = conn.cursor()
         newly_scraped = c.execute('''
         SELECT book_title, author, series_title, pub_date FROM scraped_books
-        WHERE scraped_at = date('now')
+        WHERE date(scraped_at) = date('now')
         ''').fetchall()
         if newly_scraped == []:
             print('No new books scraped.')

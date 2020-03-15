@@ -45,8 +45,8 @@ async def form_final_books(author: str):
         # some data manipulation
         month_strings = ['January', 'February', 'March', 'April', 'May', 'June',
                         'July', 'August', 'September', 'October', 'November', 'December']
-        months_to_number = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6,
-                        'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
+        months_to_number = {'January': '1', 'February': '2', 'March': '3', 'April': '4', 'May': '5', 'June': '6',
+                        'July': '7', 'August': '8', 'September': '9', 'October': '10', 'November': '11', 'December': '12'}
         re_months = '(' + '|'.join(month_strings) + ')' # construct for passing in regexp
         scrapy_df['publication_month_full'] = scrapy_df['pub_date'].str.extract(re_months)
         scrapy_df['publication_year'] = scrapy_df['pub_date'].str.extract('([0-9]{4})').fillna('Unknown')

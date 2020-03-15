@@ -26,6 +26,7 @@ async def main():
     command_spiders(author) # run scrapy spiders
     await check_goodreads(author) # get Goodreads data
     await form_final_books(author) # match scraped data and data from Goodreads
-  
+      
+    
 if __name__ == '__main__':
     asyncio.run(main())
