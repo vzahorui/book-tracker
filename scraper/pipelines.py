@@ -30,22 +30,27 @@ class BooksPipeline(object):
     def store_db(self, item):
         self.cursor.execute('''
         INSERT INTO scraped_books_stage
-        VALUES (?, ?, ?, ?, ?)''', (
+        VALUES (?, ?, ?, ?, ?, ?, ?)''', (
             item['author'],
             item['book_title'],
             item['series_title'],
-            item['pub_date'],
+            item['number_in_series'],
+            item['publication_year'],
+            item['publication_month'],
             item['scraped_at']
         ))
         self.conn.commit()
-        logger.debug('Inserted items into scraped_books_stage table: %s, %s, %s, %s, %s',
-                     item['author'], item['book_title'], item['series_title'], item['pub_date'], item['scraped_at']
+        logger.debug('Inserted items into scraped_books_stage table: %s, %s, %s, %s,  %s,  %s, %s',
+                     item['author'], item['book_title'], item['series_title'], item['number_in_series'],
+                     item['publication_year'], item['publication_month'], item['scraped_at']
                     )
     
     def close_spider(self, spider):
         # add new books to scraped_books table and clear table scraped_books_stage
         self.cursor.executescript('''
         INSERT INTO scraped_books
+        ('author', 'book_title', 'series_title', 'number_in_series',
+         'publication_year', 'publication_month', 'scraped_at')
         SELECT ss.* FROM scraped_books_stage ss
         LEFT JOIN scraped_books s 
         ON s.author = ss.author and s.book_title = ss.book_title

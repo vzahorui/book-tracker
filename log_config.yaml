@@ -18,13 +18,18 @@ loggers:
     handlers: [console]
     propagate: false
     
+  scraper.master_of_spiders:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+    
   form_final_books:
     level: WARNING
     handlers: [console]
     propagate: false
     
   list_books:
-    level: DEBUG
+    level: WARNING
     handlers: [console]
     propagate: false
     

@@ -30,9 +30,11 @@ def main():
         df = pd.read_sql(final_table, conn)
         logger.info('DataFrame loaded.')
         # manipulation upon retrieved data
-        df.loc[df['series_title']!='Standalone', 'book_title'] = '#' + df['number_in_series'] + ' ' + df['book_title']
-        number_to_month = {'1': 'January', '2': 'February', '3': 'March', '4': 'April', '5': 'May', '6': 'June',
-                        '7': 'July', '8': 'August', '9': 'September', '10': 'October', '11': 'November', '12': 'December'}
+        df.loc[(df['series_title'].notnull()) & (df['number_in_series'].notnull()) &
+               (df['number_in_series']!='Other stories'), 'book_title'] = '#' + df['number_in_series'] + ' ' + df['book_title']
+        df['series_title'].fillna('Other', inplace=True)
+        number_to_month = {'01': 'January', '02': 'February', '03': 'March', '04': 'April', '05': 'May', '06': 'June',
+                        '07': 'July', '08': 'August', '09': 'September', '10': 'October', '11': 'November', '12': 'December'}
         df['pub_date'] = df['publication_month'].map(number_to_month).fillna('') + ' ' + df['publication_year'].astype('str').replace('Unknown', '')
         df.sort_values(['series_title', 'number_in_series', 'publication_year', 'publication_month'], inplace=True)
         # creating construct for further input for Google sheet pasting

@@ -9,9 +9,7 @@ from scraper.items import BookItem
 class BrentWeeks(scrapy.Spider):
     name = 'brent_weeks'
 
-    start_urls = [
-        'http://www.brentweeks.com/'
-    ]
+    start_urls = ['http://www.brentweeks.com/']
 
     # step 1: get series 
     def parse(self, response):
@@ -58,4 +56,3 @@ class BrentWeeks(scrapy.Spider):
         item['pub_date'] = parsed_date
         item['scraped_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         yield item
-        

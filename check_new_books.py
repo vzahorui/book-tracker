@@ -21,12 +21,10 @@ logger = logging.getLogger(__name__)
 
 async def main():
     '''Everything happens here.'''
-    
     author = check_author() # get author's name from Google Sheet
     command_spiders(author) # run scrapy spiders
     await check_goodreads(author) # get Goodreads data
     await form_final_books(author) # match scraped data and data from Goodreads
-      
     
 if __name__ == '__main__':
     asyncio.run(main())
